@@ -59,24 +59,15 @@ pipeline {
             steps {
                
                sshagent(['QA_ENV_SSH_CRED']) {
-    
-                    sh "ssh  -o  StrictHostKeyChecking=no ec2-user@13.233.61.187 sudo docker rm -f myjavaapp"
-                    sh "ssh ec2-user@13.233.61.187 sudo docker run  -d  -p  8080:8080 --name myjavaapp   vimal13/javaweb:${BUILD_TAG}"
+    		sh "ssh -o StrictHostKeyChecking=no ec2-user@13.233.61.187 sudo docker rm -f myjavaapp"
+                sh "ssh ec2-user@13.233.61.187 sudo docker run -d -p 8080:8080 --name myjavaapp kulmehul/javaweb:${BUILD_TAG}"
                 }
 
             }
             
-        }
+       }
         
         
-         stage('QAT Test') {
-            steps {
-                
-               // sh 'curl --silent http://13.233.100.238:8080/java-web-app/ |  grep India'
-                
-                retry(10) {
-                    sh 'curl --silent http://13.233.61.187:8080/java-web-app/ |  grep India'
-                }
             
                
             }
